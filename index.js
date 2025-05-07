@@ -1,8 +1,6 @@
-// By VishwaGauravIn (https://itsvg.in)
-
-const GenAI = require("@google/generative-ai");
-const { TwitterApi } = require("twitter-api-v2");
-const SECRETS = require("./SECRETS");
+import { GoogleGenAI } from "@google/genai";
+import { TwitterApi } from "twitter-api-v2";
+import SECRETS from "./SECRETS.js"; // Ensure this exports your keys properly
 
 const twitterClient = new TwitterApi({
   appKey: SECRETS.APP_KEY,
@@ -11,40 +9,40 @@ const twitterClient = new TwitterApi({
   accessSecret: SECRETS.ACCESS_SECRET,
 });
 
-const generationConfig = {
-  maxOutputTokens: 400,
-  tools: [{googleSearch: {}}],
-};
-const genAI = new GenAI.GoogleGenerativeAI(SECRETS.GEMINI_API_KEY);
+const ai = new GoogleGenAI({ apiKey: SECRETS.GEMINI_API_KEY });
 
 async function run() {
-  // For text-only input, use the gemini-pro model
-  const model = genAI.getGenerativeModel({
+  const prompt =
+    "Generate a tweet (plain text, under 280 characters, emojis allowed) with a unique, practical tip, trick, or insight on using AI tools effectively in everyday life. Focus on recent AI trends, tools, or updates. Keep it clear, non-vague, and helpful for everyone.";
+
+  const response = await ai.models.generateContent({
     model: "gemini-2.0-flash",
-    generationConfig,
+    contents: [prompt],
+    config: {
+      maxOutputTokens: 400,
+      tools: [{ googleSearch: {} }],
+    },
   });
 
-  // Write your prompt here
-  // const prompt =
-  //   "generate a web development content, tips and tricks or something new or some rant or some advice as a tweet, it should not be vague and should be unique; under 280 characters and should be plain text, you can use emojis";
+  const tweet = response.text;
+  console.log("Tweet:", tweet);
 
-  const prompt = 
-  "Generate a tweet (plain text, under 280 characters, emojis allowed) with a unique, practical tip, trick, or insight on using AI tools effectively in everyday life. Focus on recent AI trends, tools, or updates. Keep it clear, non-vague, and helpful for everyone.";
-  
-  const result = await model.generateContent(prompt);
-  const response = await result.response;
-  const text = response.text();
-  console.log(text);
-  sendTweet(text);
+  // Optional: Display grounding information
+  const grounded = response.candidates?.[0]?.groundingMetadata?.searchEntryPoint?.renderedContent;
+  if (grounded) {
+    console.log("\n🔍 Grounding source info:\n", grounded);
+  }
+
+  await sendTweet(tweet);
+}
+
+async function sendTweet(text) {
+  try {
+    await twitterClient.v2.tweet(text);
+    console.log("✅ Tweet sent successfully!");
+  } catch (err) {
+    console.error("❌ Tweet failed:", err);
+  }
 }
 
 run();
-
-async function sendTweet(tweetText) {
-  try {
-    await twitterClient.v2.tweet(tweetText);
-    console.log("Tweet sent successfully!");
-  } catch (error) {
-    console.error("Error sending tweet:", error);
-  }
-}
