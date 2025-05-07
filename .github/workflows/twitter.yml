@@ -26,6 +26,10 @@ jobs:
 
       - name: Install Dependencies
         run: npm install
+      
+      - name: Log Current UTC Time
+        run: |
+          echo "Current UTC Time: $(date -u)"  
 
       - name: Run Twitter Bot
         env:
