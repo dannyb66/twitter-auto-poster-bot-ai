@@ -24,9 +24,12 @@ async function run() {
   });
 
   // Write your prompt here
-  const prompt =
-    "generate a web development content, tips and tricks or something new or some rant or some advice as a tweet, it should not be vague and should be unique; under 280 characters and should be plain text, you can use emojis";
+  // const prompt =
+  //   "generate a web development content, tips and tricks or something new or some rant or some advice as a tweet, it should not be vague and should be unique; under 280 characters and should be plain text, you can use emojis";
 
+  const prompt = 
+  "Generate a tweet (plain text, under 280 characters, emojis allowed) with a unique, practical tip, trick, or insight on using AI tools effectively in everyday life. Focus on recent AI trends, tools, or updates. Keep it clear, non-vague, and helpful for everyone.";
+  
   const result = await model.generateContent(prompt);
   const response = await result.response;
   const text = response.text();
