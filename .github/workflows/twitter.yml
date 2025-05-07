@@ -2,6 +2,7 @@ name: Auto Tweet Using AI
 
 on:
   schedule:
+    - cron: "*/1 * * * *"
     # 8 AM PT = 15:00 UTC
     - cron: "0 15 * * *"
     # 12 PM PT = 19:00 UTC
