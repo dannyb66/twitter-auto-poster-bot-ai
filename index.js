@@ -19,7 +19,7 @@ async function run() {
     "Generate a tweet (plain text, under 280 characters, emojis allowed) that highlights a trending news story in AI or tech. Briefly explain what happened and include the general sentiment (positive, negative, or surprising). Include the website link of a related news article. Make it engaging and informative to hook readers. Use viral/trending hashtags to increase reach. Return only the tweet content without any text or code block formatting and without any pre or post tweet words. Just the tweet like it should appear on Twitter. Start the tweet directly, no acknowledgments or preamble about what will be returned. Just the tweet text only. Ensure the content is under 280 characters.";
 
   // Randomly pick one of the prompts
-  const selectedPrompt = Math.random() < 0.5 ? tips_prompt : news_prompt;
+  const selectedPrompt = Math.random() < 0.2 ? tips_prompt : news_prompt;
 
   const response = await ai.models.generateContent({
     model: "gemini-2.0-flash",
