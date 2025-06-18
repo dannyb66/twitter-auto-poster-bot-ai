@@ -22,7 +22,7 @@ async function run() {
     "Write a viral, polarizing tweet (max 280 characters, emojis allowed) about a trending AI or tech news story, targeted at the Bay Area startup scene. Start with a bold or culty hook that tech founders, VCs, or builders would obsess over. Make it intense, contrarian, or hype-inducing. Briefly explain what happened and why it matters to startup culture, product builders, or venture-backed bets. Include a link to a relevant article (clickbait welcome). Use trending hashtags like #AI, #Startups, #VC, #TechTwitter. Sprinkle in strategic emojis. End with a Bay Area-style CTA like: 'Would you build this? 🚀', 'Hot take or cold truth?', 'Pitch this to an investor?', 'Would Sequoia fund this?', 'Too much or not enough?'. No formatting, no intro—just pure tweet text.";
   
   // Randomly pick one of the prompts
-  const selectedPrompt = Math.random() < 0.2 ? tips_prompt : news_prompt;
+  const selectedPrompt = Math.random() < 0.1 ? tips_prompt : news_prompt;
 
   const response = await ai.models.generateContent({
     model: "gemini-2.0-flash",
